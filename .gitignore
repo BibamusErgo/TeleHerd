@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+*.pyo
+*.db
+storage/accounts.db
+storage/sessions/
+# Environment
+.env
+# IDEs
+.vscode/
+.idea/
