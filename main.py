@@ -73,12 +73,12 @@ class TelegramFarmGUI(QMainWindow):
 
         # Таблица аккаунтов
         self.table = QTableWidget(self)
-        self.table.setStyleSheet("background-color: #1c1f26; alternate-background-color: #1c1f26; selection-background-color: #50577a; color: #e0e0e0;");
-        self.table.viewport().setStyleSheet("background-color: #1c1f26;");
+        self.table.setStyleSheet("background-color: #1c1f26; alternate-background-color: #1c1f26; selection-background-color: #50577a; color: #e0e0e0")
+        self.table.viewport().setStyleSheet("background-color: #1c1f26")
         self.table.setRowCount(0)
         self.table.setColumnCount(4)
         self.table.setHorizontalHeaderLabels(["ID", "Прокси", "Статус", "Последнее действие"])
-        self.table.viewport().setStyleSheet("background-color: #1c1f26;")
+        self.table.viewport().setStyleSheet("background-color: #1c1f26")
         self.layout.addWidget(self.table)
 
         # Надпись “Нет аккаунтов”, если таблица пуста
