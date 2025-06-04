@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>900</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TeleHerd — Telegram Farm Manager</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <widget class="QLabel" name="labelTitle">
+      <property name="text">
+       <string>Список Telegram-аккаунтов</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QTableWidget" name="tableAccounts">
+      <property name="columnCount">
+       <number>4</number>
+      </property>
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <column>
+       <property name="text">
+        <string>ID</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Прокси</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Статус</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Последнее действие</string>
+       </property>
+      </column>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="buttonLayout">
+      <item><widget class="QPushButton" name="btnRegister"><property name="text"><string>Зарегистрировать аккаунт</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnProxy"><property name="text"><string>Назначить прокси</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnBroadcast"><property name="text"><string>Запустить рассылку</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnRespond"><property name="text"><string>Автоответчик</string></property></widget></item>
+      <item><widget class="QPushButton" name="btnRefresh"><property name="text"><string>Обновить список</string></property></widget></item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
