@@ -3,7 +3,9 @@
 import requests
 import os
 import json
+import asyncio
 from datetime import datetime
+from core.telegram_core import TelegramCore
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), '../storage/config.json')
 
@@ -74,16 +76,56 @@ class SMSManager:
             return None
 
     def register_account(self):
-        """
-        Полная процедура регистрации Telegram-аккаунта (эмуляция, требует Telethon для передачи кода)
-        Здесь только заготовка! В рабочем коде будет интеграция с telegram_core.
-        """
+        """Полная процедура регистрации Telegram-аккаунта через SMS-Activate."""
         result = self.buy_number()
         if not result["success"]:
             return {"success": False, "error": result["error"]}
-        # Дальнейшая логика: через Telethon отправить запрос на регистрацию, принять код, завершить регистрацию
-        # ...
-        # После успеха:
-        # self.set_status(result["id"], 6)
-        # return {"success": True, "account": {"id": phone, ...}}
-        return {"success": False, "error": "Заглушка. Интеграция с Telethon будет позже."}
+
+        sms_id = result["id"]
+        phone = result["number"]
+
+        tg_core = TelegramCore()
+        client = tg_core.get_client(phone)
+
+        async def _process():
+            await client.connect()
+            try:
+                sent = await client.send_code_request(phone)
+            except Exception as e:
+                await client.disconnect()
+                return {"success": False, "error": str(e)}
+
+            code = None
+            for _ in range(30):
+                code = self.get_sms(sms_id)
+                if code:
+                    break
+                await asyncio.sleep(2)
+
+            if not code:
+                await client.disconnect()
+                return {"success": False, "error": "Не получен код из SMS"}
+
+            try:
+                await client.sign_up(code, "TeleHerd", phone=phone, phone_code_hash=sent.phone_code_hash)
+            except Exception as e:
+                await client.disconnect()
+                return {"success": False, "error": str(e)}
+
+            await client.disconnect()
+            return {"success": True}
+
+        res = asyncio.run(_process())
+        if not res.get("success"):
+            self.set_status(sms_id, 8)
+            return res
+
+        self.set_status(sms_id, 6)
+        account = {
+            "id": phone,
+            "proxy": "",
+            "status": "registered",
+            "last": datetime.now().strftime('%d.%m.%Y %H:%M'),
+        }
+        res["account"] = account
+        return res
