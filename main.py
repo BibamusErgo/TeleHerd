@@ -213,12 +213,14 @@ class TelegramFarmGUI(QMainWindow):
 
     def register_account(self):
         result = self.sms_manager.register_account()
-        if result["success"]:
+        if result.get("success"):
             self.account_manager.add_account(result["account"])
-            QMessageBox.information(self, "Успех", f"Аккаунт {result['account']['id']} успешно зарегистрирован.")
+            QMessageBox.information(self, "Успех",
+                                    f"Аккаунт {result['account']['id']} успешно зарегистрирован.")
             self.load_accounts()
         else:
-            QMessageBox.warning(self, "Ошибка", "Не удалось зарегистрировать аккаунт.")
+            error = result.get("error", "Не удалось зарегистрировать аккаунт.")
+            QMessageBox.warning(self, "Ошибка", error)
 
     def assign_proxy(self):
         selected = self.table.currentRow()
